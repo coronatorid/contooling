@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  nginx:
+    image: nginx:stable
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+  landingpage:
+    image: "ghcr.io/coronatorid/landingpage/web:${TAG}"
+    ports:
+      - "3000:3000"
