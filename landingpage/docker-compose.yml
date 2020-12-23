@@ -6,8 +6,10 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+    links:
+      - landingpage
+    depends_on:
+      - landingpage
 
   landingpage:
     image: "ghcr.io/coronatorid/landingpage/web:${TAG}"
-    ports:
-      - "3000:3000"
