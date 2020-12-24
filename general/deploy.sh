@@ -2,6 +2,7 @@
 
 # Variable
 # SERVICE = deployed services
+# RELEASE_TAG = deployment tag of a services
 
 echo "START DEPLOYMENT PROCESS"
 
