@@ -9,7 +9,6 @@ echo "Update repository"
 echo "==============================================="
 
 sudo apt update
-sudo apt upgrade
 
 
 
