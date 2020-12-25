@@ -14,7 +14,11 @@ sh setup.sh
 
 ### User creation
 
-After running setup script, then the next step is you need to create new user. Follow this tutorial instead about how to create new user: [[Here](https://www.digitalocean.com/community/tutorials/how-to-create-a-new-sudo-enabled-user-on-ubuntu-20-04-quickstart)]. We suggest use `deployerbot` name.
+After running setup script, then the next step is you need to create new user.
+
+```
+adduser deployerbot
+```
 
 If you're finish, then add your user into docker user group
 
