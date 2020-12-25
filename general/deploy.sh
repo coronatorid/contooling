@@ -93,14 +93,31 @@ user=root
     scp -i ./id_rsa ./supervisor.conf $SERVER_USER@$SERVER_HOST:/etc/supervisor/conf.d/$SERVICE.conf
     scp -i ./id_rsa ./nginx_supervisor.conf $SERVER_USER@$SERVER_HOST:/etc/supervisor/conf.d/nginx_$SERVICE.conf
     
+    
+    echo "========================================"
     echo "Modify file access"
+    echo "========================================"
     ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "chmod 700 -R /opt/$SERVICE/"
+    echo "========================================"
     
+    
+    
+    
+    echo "========================================"
     echo "Login into ghcr.io"
+    echo "========================================"
     ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "echo $DOCKER_PASSWORD | sudo docker login ghcr.io -u $DOCKER_USERNAME --password-stdin"
+    echo "========================================"
     
+    
+    
+    
+    
+    echo "========================================"
     echo "Rereading and updating supervisor"
+    echo "========================================"
     ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "supervisorctl reread && supervisorctl update"
+    echo "========================================"
     
     
     
@@ -122,8 +139,9 @@ user=root
         echo "========================================"
         
         nginx_status=$(ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "docker container inspect ${SERVICE}_nginx | jq 'first.State.Status'")
+        echo "NGINX STATUS: $nginx_status"
         
-        if [[ -z $nginx_status && $nginx_status == "running" ]]; then
+        if ! [ -z $nginx_status ] && [[ $nginx_status =~ "running" ]]; then
             echo "Nginx already running, restarting instead of docker-compose up"
             ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "docker exec ${SERVICE}_nginx nginx -s reload"
         else
