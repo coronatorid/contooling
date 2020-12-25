@@ -117,6 +117,18 @@ user=root
     ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "echo $DOCKER_PASSWORD | sudo docker login ghcr.io -u $DOCKER_USERNAME --password-stdin"
     echo "========================================"
     
+    echo "========================================"
+    echo "Pulling image in remote server"
+    echo "========================================"
+    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "cd /opt/$SERVICE/ && docker-compose pull"
+    echo "========================================"
+    
+    
+    echo "========================================"
+    echo "Create $SERVICE network in remote server"
+    echo "========================================"
+    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "docker network -d bridge ${SERVICE}_default"
+    echo "========================================"
     
     
     
