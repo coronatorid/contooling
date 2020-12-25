@@ -39,9 +39,20 @@ if [ -d "./$SERVICE" ]; then
     chmod 700 id_rsa
     chmod 700 id_rsa.pub
     
+    ssh-keygen -R $SERVER_HOST
+    ssh-keygen -R $SERVER_HOST
+    ssh-keygen -R $SERVER_HOST,$SERVER_HOST
+    ssh-keyscan -H $SERVER_HOST,$SERVER_HOST >> ~/.ssh/known_hosts
+    ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+    ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+    
     echo "========================================"
     
     
+    echo "Installing prerequisites"
+    echo "========================================"
+    sudo snap install yq
+    sudo snap install jq
     
     
     echo "Gathering all services in docker-compose.yml."
