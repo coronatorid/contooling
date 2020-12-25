@@ -40,8 +40,7 @@ if [ -d "./$SERVICE" ]; then
     chmod 700 id_rsa.pub
     
     mkdir -p ~/.ssh/
-    ssh-keyscan -H $SERVER_HOST,$SERVER_HOST >> ~/.ssh/known_hosts
-    ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+    # TODO: IMPLEMENT THIS https://serverfault.com/questions/132970/can-i-automatically-add-a-new-host-to-known-hosts/807363#807363
     ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
     
     echo "========================================"
