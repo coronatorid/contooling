@@ -22,6 +22,7 @@ sudo apt install ca-certificates
 sudo apt install curl
 sudo apt install gnupg-agent
 sudo apt install software-properties-common
+sudo snap install yq
 
 
 
