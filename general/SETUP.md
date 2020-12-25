@@ -14,12 +14,13 @@ sh setup.sh
 
 ### User creation
 
-After running setup script, then the next step is you need to create new user. Follow this tutorial instead about how to create new user: [[Here](https://www.digitalocean.com/community/tutorials/how-to-create-a-new-sudo-enabled-user-on-ubuntu-20-04-quickstart)].
+After running setup script, then the next step is you need to create new user. Follow this tutorial instead about how to create new user: [[Here](https://www.digitalocean.com/community/tutorials/how-to-create-a-new-sudo-enabled-user-on-ubuntu-20-04-quickstart)]. We suggest use `deployerbot` name.
 
 If you're finish, then add your user into docker user group
 
 ```bash
-sudo usermod -aG docker username_of_user_created_before
+sudo usermod -aG sudo deployerbot
+sudo usermod -aG docker deployerbot
 ```
 
 ### Setup SSH
@@ -27,7 +28,7 @@ sudo usermod -aG docker username_of_user_created_before
 Creating ssh directory of your newly created users
 
 ```bash
-mkdir -p /home/username_of_user_created_before/.ssh
+mkdir -p /home/deployerbot/.ssh
 ```
 
 Copy public key into `.ssh/authorized_keys`.
