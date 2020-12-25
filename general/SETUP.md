@@ -32,3 +32,22 @@ mkdir -p /home/deployerbot/.ssh
 ```
 
 Copy public key into `.ssh/authorized_keys`.
+
+After that, you need to edit your sshd config.
+
+```
+sudo nano /etc/ssh/sshd_config
+```
+
+Setup this variable
+
+```
+PasswordAuthentication no
+PubkeyAuthentication yes
+```
+
+Then restart ssh service
+
+```
+sudo systemctl restart sshd
+```
