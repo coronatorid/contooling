@@ -127,7 +127,7 @@ user=root
     echo "========================================"
     echo "Create $SERVICE network in remote server"
     echo "========================================"
-    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "docker network -d bridge ${SERVICE}_default"
+    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "docker network create -d bridge ${SERVICE}_default"
     echo "========================================"
     
     
