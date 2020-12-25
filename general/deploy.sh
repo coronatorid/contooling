@@ -39,9 +39,7 @@ if [ -d "./$SERVICE" ]; then
     chmod 700 id_rsa
     chmod 700 id_rsa.pub
     
-    ssh-keygen -R $SERVER_HOST
-    ssh-keygen -R $SERVER_HOST
-    ssh-keygen -R $SERVER_HOST,$SERVER_HOST
+    mkdir -p ~/.ssh/
     ssh-keyscan -H $SERVER_HOST,$SERVER_HOST >> ~/.ssh/known_hosts
     ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
     ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
