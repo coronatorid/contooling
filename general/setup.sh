@@ -17,11 +17,11 @@ sudo apt upgrade
 echo "Installing prerequisites"
 echo "==============================================="
 
-sudo apt install apt-transport-https
-sudo apt install ca-certificates
-sudo apt install curl
-sudo apt install gnupg-agent
-sudo apt install software-properties-common
+sudo apt install apt-transport-https -y
+sudo apt install ca-certificates -y
+sudo apt install curl -y
+sudo apt install gnupg-agent -y
+sudo apt install software-properties-common -y
 sudo snap install yq
 
 
