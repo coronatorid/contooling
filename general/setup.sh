@@ -22,6 +22,7 @@ sudo apt install curl -y
 sudo apt install gnupg-agent -y
 sudo apt install software-properties-common -y
 sudo snap install yq
+sudo snap install jq
 
 
 
