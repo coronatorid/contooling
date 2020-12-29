@@ -34,12 +34,12 @@ if [ -d "./$SERVICE" ]; then
     echo "========================================"
     echo "SSH Preparation"
     
-    mkdir -p ~/.ssh && chmod 700 ~/.ssh && cd ~/.ssh/
-    echo "$SSH_PRIVATE_KEY" >> ./id_rsa && echo "$SSH_PUBLIC_KEY" >> ./id_rsa.pub
-    chmod 600 id_rsa && chmod 644 id_rsa.pub
-    cat ./general/ssh-config-file > config && chmod 644 config
-    sed -i 's/localhost/'${SERVER_HOST}'/g' config
-    sed -i 's/root/'${SERVER_USER}'/g' config
+    mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa && echo "$SSH_PUBLIC_KEY" >> ~/.ssh/id_rsa.pub
+    chmod 600 ~/.ssh/id_rsa && chmod 644 ~/.ssh/id_rsa.pub
+    cat ./general/ssh-config-file > ~/.ssh/config && chmod 644 ~/.ssh/config
+    sed -i 's/localhost/'${SERVER_HOST}'/g' ~/.ssh/config
+    sed -i 's/root/'${SERVER_USER}'/g' ~/.ssh/config
     
     echo "========================================"
     
