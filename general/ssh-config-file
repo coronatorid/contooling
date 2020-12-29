@@ -1,5 +1,5 @@
 Host CoronatorMachine
-  HostName coronator.id
+  HostName localhost
   User root
   Port 22
   StrictHostKeyChecking no

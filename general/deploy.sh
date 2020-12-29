@@ -13,7 +13,7 @@
 
 echo "START DEPLOYMENT PROCESS"
 
-if [ -z $SERVICE ] || [ -z $DOCKER_PASSWORD ] || [ -z $DOCKER_USERNAME ] || [ -z $RELEASE_TAG ] || [ -z $SSH_PRIVATE_KEY ] || [ -z $SSH_PUBLIC_KEY ]; then
+if [ -z $SERVICE ] || [ -z $DOCKER_PASSWORD ] || [ -z $DOCKER_USERNAME ] || [ -z $RELEASE_TAG ] || [ -z $SSH_PRIVATE_KEY ] || [ -z $SSH_PUBLIC_KEY ] || [ -z $SERVER_USER ] || [ -z $SERVER_HOST ]; then
     echo "Some variable is not initiated, exiting deployment process."
     exit 1
 fi
@@ -38,6 +38,8 @@ if [ -d "./$SERVICE" ]; then
     echo "$SSH_PRIVATE_KEY" >> ./id_rsa && echo "$SSH_PUBLIC_KEY" >> ./id_rsa.pub
     chmod 600 id_rsa && chmod 644 id_rsa.pub
     cat ./general/ssh-config-file > config && chmod 644 config
+    sed -i 's/localhost/'${SERVER_HOST}'/g' config
+    sed -i 's/root/'${SERVER_USER}'/g' config
     
     echo "========================================"
     
