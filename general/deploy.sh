@@ -35,9 +35,9 @@ if [ -d "./$SERVICE" ]; then
     echo "SSH Preparation"
     
     mkdir -p ~/.ssh && chmod 700 ~/.ssh
-    echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa && echo "$SSH_PUBLIC_KEY" >> ~/.ssh/id_rsa.pub
+    echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa && echo "$SSH_PUBLIC_KEY" > ~/.ssh/id_rsa.pub
     chmod 600 ~/.ssh/id_rsa && chmod 644 ~/.ssh/id_rsa.pub
-    cat ./general/ssh-config-file > ~/.ssh/config && chmod 644 ~/.ssh/config
+    cat ./general/ssh-config-file >> ~/.ssh/config && chmod 644 ~/.ssh/config
     sed -i 's/localhost/'${SERVER_HOST}'/g' ~/.ssh/config
     sed -i 's/root/'${SERVER_USER}'/g' ~/.ssh/config
     
