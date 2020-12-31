@@ -34,14 +34,12 @@ if [ -d "./$SERVICE" ]; then
     echo "========================================"
     echo "SSH Preparation"
     
-    echo "$SSH_PRIVATE_KEY" >> ./id_rsa
-    echo "$SSH_PUBLIC_KEY" >> ./id_rsa.pub
-    chmod 700 id_rsa
-    chmod 700 id_rsa.pub
-    
-    mkdir -p ~/.ssh/
-    # TODO: IMPLEMENT THIS https://serverfault.com/questions/132970/can-i-automatically-add-a-new-host-to-known-hosts/807363#807363
-    ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+    mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa && echo "$SSH_PUBLIC_KEY" > ~/.ssh/id_rsa.pub
+    chmod 600 ~/.ssh/id_rsa && chmod 644 ~/.ssh/id_rsa.pub
+    cat ./general/ssh-config-file >> ~/.ssh/config && chmod 644 ~/.ssh/config
+    sed -i 's/localhost/'${SERVER_HOST}'/g' ~/.ssh/config
+    sed -i 's/root/'${SERVER_USER}'/g' ~/.ssh/config
     
     echo "========================================"
     
@@ -96,16 +94,16 @@ user=root
     echo "Copying files into server"
     echo "========================================"
     
-    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "mkdir -p /opt/$SERVICE/"
-    scp -i ./id_rsa -r $(pwd) $SERVER_USER@$SERVER_HOST:/opt/
-    scp -i ./id_rsa ./supervisor.conf $SERVER_USER@$SERVER_HOST:/etc/supervisor/conf.d/$SERVICE.conf
-    scp -i ./id_rsa ./nginx_supervisor.conf $SERVER_USER@$SERVER_HOST:/etc/supervisor/conf.d/nginx_$SERVICE.conf
+    ssh CoronatorMachine "mkdir -p /opt/$SERVICE/"
+    scp -r $(pwd) CoronatorMachine:/opt/
+    scp ./supervisor.conf CoronatorMachine:/etc/supervisor/conf.d/$SERVICE.conf
+    scp ./nginx_supervisor.conf CoronatorMachine:/etc/supervisor/conf.d/nginx_$SERVICE.conf
     
     
     echo "========================================"
     echo "Modify file access"
     echo "========================================"
-    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "chmod 700 -R /opt/$SERVICE/"
+    ssh CoronatorMachine "chmod 700 -R /opt/$SERVICE/"
     echo "========================================"
     
     
@@ -114,20 +112,20 @@ user=root
     echo "========================================"
     echo "Login into ghcr.io"
     echo "========================================"
-    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "echo $DOCKER_PASSWORD | sudo docker login ghcr.io -u $DOCKER_USERNAME --password-stdin"
+    ssh CoronatorMachine "echo $DOCKER_PASSWORD | sudo docker login ghcr.io -u $DOCKER_USERNAME --password-stdin"
     echo "========================================"
     
     echo "========================================"
     echo "Pulling image in remote server"
     echo "========================================"
-    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "cd /opt/$SERVICE/ && docker-compose pull"
+    ssh CoronatorMachine "cd /opt/$SERVICE/ && docker-compose pull"
     echo "========================================"
     
     
     echo "========================================"
     echo "Create $SERVICE network in remote server"
     echo "========================================"
-    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "docker network create -d bridge ${SERVICE}_default"
+    ssh CoronatorMachine "docker network create -d bridge ${SERVICE}_default"
     echo "========================================"
     
     
@@ -136,7 +134,7 @@ user=root
     echo "========================================"
     echo "Rereading and updating supervisor"
     echo "========================================"
-    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "supervisorctl reread && supervisorctl update"
+    ssh CoronatorMachine "supervisorctl reread && supervisorctl update"
     echo "========================================"
     
     
@@ -146,7 +144,7 @@ user=root
     echo "Deploying $SERVICE services"
     echo "========================================"
     
-    ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "supervisorctl restart $SERVICE"
+    ssh CoronatorMachine "supervisorctl restart $SERVICE"
     
     echo "========================================"
     
@@ -158,15 +156,15 @@ user=root
         echo "Deploying nginx services"
         echo "========================================"
         
-        nginx_status=$(ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "docker container inspect ${SERVICE}_nginx | jq 'first.State.Status'")
+        nginx_status=$(ssh CoronatorMachine "docker container inspect ${SERVICE}_nginx | jq 'first.State.Status'")
         echo "NGINX STATUS: $nginx_status"
         
         if ! [ -z $nginx_status ] && [[ $nginx_status =~ "running" ]]; then
             echo "Nginx already running, restarting instead of docker-compose up"
-            ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "docker exec ${SERVICE}_nginx nginx -s reload"
+            ssh CoronatorMachine "docker exec ${SERVICE}_nginx nginx -s reload"
         else
             echo "Restarting nginx with supervisor"
-            ssh -i ./id_rsa $SERVER_USER@$SERVER_HOST "supervisorctl restart nginx_$SERVICE"
+            ssh CoronatorMachine "supervisorctl restart nginx_$SERVICE"
         fi
         echo "========================================"
     fi
