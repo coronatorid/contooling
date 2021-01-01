@@ -1,7 +1,0 @@
-Host CoronatorMachine
-  HostName localhost
-  User root
-  Port 22
-  StrictHostKeyChecking no
-  PasswordAuthentication no
-  PubkeyAuthentication yes
