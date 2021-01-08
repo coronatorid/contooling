@@ -26,6 +26,8 @@ services:
   core:
     image: "ghcr.io/coronatorid/core-onator:${TAG}"
     container_name: api_core
+    volumes:
+      - /opt/storage/:/opt/storage/
     env_file:
       - ./core-onator/.env
     ports:
