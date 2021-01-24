@@ -1,20 +1,6 @@
 version: "3.8"
 services:
-  nginx:
-    image: nginx:stable
-    container_name: landingpage_nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    links:
-      - web1
-      - web2
-
-  web1:
+  web:
     image: "ghcr.io/coronatorid/landingpage/web:${TAG}"
+    network_mode: host
     container_name: landingpage_web1
-
-  web2:
-    image: "ghcr.io/coronatorid/landingpage/web:${TAG}"
-    container_name: landingpage_web2
